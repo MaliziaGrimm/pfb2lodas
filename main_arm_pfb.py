@@ -7,22 +7,6 @@ from shutil import copyfile
 
 def speichern_neu_AN():
 
-   ######Testbetrieb - Prflichtefelder füllen
-
-#   E_pnr.delete(0,END)
-#   E_pnr.insert(5,"12345")
-#   E_name.insert(25, "Name-Muster")
-#   E_vname.insert(25, "Vorname-Muster")
-#   E_geburtsdatum.delete(0,END)
-#   E_geburtsdatum.insert(15, "01.01.1988")
-#   E_eintrittsdatum.delete(0,END)
-#   E_eintrittsdatum.insert(15,"01.06.2019")
-#   E_strasse.insert(25, "Starsse - Muster")
-#   E_hnummer.insert(5, "123")
-#   E_plz.insert(5, "12345")
-#   E_wohnort.insert(25, "Wohnort-Muster") 
-#   E_austritt.insert(15, "31.06.2019")
-
 ### Block Pflichtfelder lesen
    v_pnr = E_pnr.get()
    v_name = E_name.get()
@@ -66,6 +50,11 @@ def speichern_neu_AN():
       v_krankenkasse = E_krankenkasse.get()
       v_uvgefahrtarif = E_uvgefahrtarif.get()
       v_austritt = E_austritt.get()
+      if v_austritt == "TT.MM.JJJJ":
+         v_austritt = ""
+      else:
+         pass
+         
       v_elterneigenschaft = str(R_elterneigenschaft.get())
 
       zv_kv = var_KV.get()
@@ -268,11 +257,9 @@ def speichern_neu_AN():
 
       if os.path.exists("daten\\pfb_lodas.txt"):
          ## Datei öffnen und Daten werden angehangen
-         print("Es wird KEINE neue Datei angelegt")
          fileziel=open("daten\\pfb_lodas.txt","a")
       else:
          ## Datei neu öffnen und Kopfdaten schreiben
-         print("Es wird eine neue Datei angelegt")
          fileziel=open("daten\\pfb_lodas.txt","w")
          ## Beraternummer, Mandantennummer ** anpassen an die eigene BNR, Mdt
          fileziel.write("[Allgemein]\nZiel=LODAS\nVersion_SST=1.0\nBeraterNr=999999\nMandantenNr=99999\n")
@@ -296,13 +283,13 @@ def speichern_neu_AN():
       fileziel.write("\n11;"+v_pnr+";'"+v_name+"';'"+v_vname+"';'"+v_strasse+"';'"+v_hnummer+"';'"+v_wohnort+"';"+v_plz+";000;"+v_geburtsdatum+";"+v_geschlecht+";;"+v_versicherungsnummer+";;'"+v_geburtsort+"';")
       fileziel.write("\n12;"+v_pnr+";'"+v_berufsbez+"';"+v_pgr+";"+v_schulab+";"+v_berufab+";"+v_kostenstelle+";")
       fileziel.write("\n13;"+v_pnr+";"+v_waz+";")
-      fileziel.write("\n14;"+v_pnr+";'"+v_steuerid+"';"+v_artbeschaeftigung+";"+v_steuerklasse+";"+v_kinderfreibetrag+";"+v_faktor+";")
+      fileziel.write("\n14;"+v_pnr+";'"+v_steuerid+"';"+v_artbeschaeftigung+";"+v_steuerklasse+";"+v_kinderfreibetrag+";;")
       fileziel.write("\n15;"+v_pnr+";"+v_elterneigenschaft+";"+v_kv+";"+v_rv+";"+v_av+";"+v_pv+";")
       fileziel.write("\n16;"+v_pnr+";5;"+v_iban+";")
       fileziel.write("\n17;"+v_pnr+";"+v_fbid+";"+v_fbeigenelohnart+";"+v_gehalt+";")
       fileziel.write("\n18;"+v_pnr+";"+v_stdlohn+";")
-      fileziel.write("\n[Hinweisdaten]\n'**"+v_pnr+"** Krankenkasse: "+v_krankenkasse+" **\n** Gefahrtarif: "+v_uvgefahrtarif+" ** Staatsangehörigkeit: "+v_staatsang+"\n** weitere Beschäftigung: "+v_weiterebesch+" (1=ja)** weitere Besch. auch geringfüging: "+v_weitereauchgering+" (1=ja)")
-      fileziel.write("\n** Geburtsland: "+v_geburtsland+" ** Konfession: "+v_konfession+"\n** Informationen aus dem Textfeld: "+v_textfeld+"'")   
+      fileziel.write("\n[Hinweisdaten]\n'**"+v_pnr+"** Krankenkasse: "+v_krankenkasse+" ** Gefahrtarif: "+v_uvgefahrtarif+" ** Staatsangehörigkeit: "+v_staatsang+" ** weitere Beschäftigung: "+v_weiterebesch+" (1=ja)** weitere Besch. auch geringfüging: "+v_weitereauchgering+" (1=ja)")
+      fileziel.write("** Geburtsland: "+v_geburtsland+" ** Konfession: "+v_konfession+" ** Faktor zur Steuer: "+v_faktor+" ** Informationen aus dem Textfeld: "+v_textfeld+"'")   
 
       fileziel.close()
 
