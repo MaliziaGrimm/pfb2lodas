@@ -308,7 +308,7 @@ def konvertieren():
 ### Ende 
 
 def kurzhilfe():
-   messagebox.showwarning("Hinweise zur Verwendung", "Personalnummer zwischen 1 und 99999.\nDie Personalnummer darf NICHT in Lodas vergeben sein!\nDatumsangaben Tage und Monate immer 2 stellig,\ndas Jahr 4 stellig. Datum Trennzeichen Punkt.")
+   messagebox.showwarning("Hinweise zur Verwendung", "Personalnummer zwischen 1 und 99999.\nDie Personalnummer darf NICHT in Lodas vergeben sein!\nDatumsangaben Tage und Monate immer 2 stellig,\ndas Jahr 4 stellig. Datum Trennzeichen Punkt.\nGehalt und Stundenlohn Trennzeichen Komma!")
 
 def exit():
     root.destroy()
