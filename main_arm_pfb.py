@@ -48,7 +48,7 @@ def speichern_neu_AN():
    else:
       v_versicherungsnummer = E_versicherungsnummer.get()
       v_krankenkasse = E_krankenkasse.get()
-      v_uvgefahrtarif = E_uvgefahrtarif.get()
+    #  v_uvgefahrtarif = E_uvgefahrtarif.get()
       v_austritt = E_austritt.get()
       if v_austritt == "TT.MM.JJJJ":
          v_austritt = ""
@@ -226,7 +226,7 @@ def speichern_neu_AN():
       E_wohnort.delete(0,END) 
       E_versicherungsnummer.delete(0,END)
       E_krankenkasse.delete(0,END)
-      E_uvgefahrtarif.delete(0,END)
+    #  E_uvgefahrtarif.delete(0,END)
       E_austritt.delete(0,END)
       E_austritt.insert(15, "TT.MM.JJJJ")
       var_KV.set(KV_list[1])
@@ -251,32 +251,43 @@ def speichern_neu_AN():
       E_faktor.delete(0,END)
       E_konfession.delete(0,END)
       E_textfeld.delete(0,END)
+      var_aktuelles_Datum = os.path.join(time.strftime('%d.%m.%Y'))
 
 ##############################################
 ### ist schon eine Erfassungsdatei da? 
 
       if os.path.exists("daten\\pfb_lodas.txt"):
-         ## Datei öffnen und Daten werden angehangen
-         fileziel=open("daten\\pfb_lodas.txt","a")
+        ## Datei öffnen und Daten werden angehangen
+        fileziel=open("daten\\pfb_lodas.txt","a")
+        filewiedervorlage=open("daten\\pfb_wiedervorlage.txt","a")
       else:
-         ## Datei neu öffnen und Kopfdaten schreiben
-         fileziel=open("daten\\pfb_lodas.txt","w")
-         ## Beraternummer, Mandantennummer ** anpassen an die eigene BNR, Mdt
-         fileziel.write("[Allgemein]\nZiel=LODAS\nVersion_SST=1.0\nBeraterNr=999999\nMandantenNr=99999\n")
-         fileziel.write("Stringbegrenzer='\n\n* LEGENDE:\n* Datei erzeugt mit Tool main_arm_pfb\n* AP: Andreé Rosenkranz; andree@rosenkranz.one")
-         fileziel.write("\n\n* Satzbeschreibungen zur Anlage von Stammdaten für Mitarbeiter\n\n")
-         ## schreiben der Satzarten
-         fileziel.write("[Satzbeschreibung]")
-         fileziel.write("\n10;u_lod_psd_beschaeftigung;pnr#psd;eintrittdatum#psd;austrittdatum#psd;arbeitsverhaeltnis#psd;schriftl_befristung#psd;datum_urspr_befr#psd;abschl_befr_arbvertr#psd;verl_befr_arbvertr#psd;befr_gr_2_monate#psd;")
-         fileziel.write("\n11;u_lod_psd_mitarbeiter;pnr#psd;duevo_familienname#psd;duevo_vorname#psd;adresse_strassenname#psd;adresse_strasse_nr#psd;adresse_ort#psd;adresse_plz#psd;staatsangehoerigkeit#psd;geburtsdatum_ttmmjj#psd;geschlecht#psd;familienstand#psd;sozialversicherung_nr#psd;adresse_anschriftenzusatz#psd;gebort#psd;")
-         fileziel.write("\n12;u_lod_psd_taetigkeit;pnr#psd;berufsbezeichnung#psd;persgrs#psd;schulabschluss#psd;ausbildungsabschluss#psd;stammkostenstelle#psd;")
-         fileziel.write("\n13;u_lod_psd_arbeitszeit_regelm;pnr#psd;az_wtl_indiv#psd;")
-         fileziel.write("\n14;u_lod_psd_steuer;pnr#psd;identifikationsnummer#psd;els_2_haupt_ag_kz#psd;st_klasse#psd;kfb_anzahl#psd;faktor#psd;")
-         fileziel.write("\n15;u_lod_psd_sozialversicherung;pnr#psd;kz_zuschl_pv_kinderlose#psd;kv_bgrs#psd;rv_bgrs#psd;av_bgrs#psd;pv_bgrs#psd;")
-         fileziel.write("\n16;u_lod_psd_ma_bank;pnr#psd;ma_bank_zahlungsart#psd;ma_iban#psd;")
-         fileziel.write("\n17;u_lod_psd_festbezuege;pnr#psd;festbez_id#psd;lohnart_nr#psd;betrag#psd;")
-         fileziel.write("\n18;u_lod_psd_lohn_gehalt_bezuege;pnr#psd;std_lohn_1#psd;")
-         fileziel.write("\n\n* Stammdaten zur Anlage von Mitarbeitern\n")
+        ## Datei neu öffnen und Kopfdaten schreiben
+        fileziel=open("daten\\pfb_lodas.txt","w")
+        filewiedervorlage=open("daten\\pfb_wiedervorlage.txt","w")
+        ## Beraternummer, Mandantennummer ** anpassen an die eigene BNR, Mdt
+        fileziel.write("[Allgemein]\nZiel=LODAS\nVersion_SST=1.0\nBeraterNr=999999\nMandantenNr=99999\n")
+        fileziel.write("Stringbegrenzer='\n\n* LEGENDE:\n* Datei erzeugt mit Tool main_arm_pfb\n* AP: Andreé Rosenkranz; andree@rosenkranz.one")
+        fileziel.write("\n\n* Satzbeschreibungen zur Anlage von Stammdaten für Mitarbeiter\n\n")
+        ## schreiben der Satzarten
+        fileziel.write("[Satzbeschreibung]")
+        fileziel.write("\n10;u_lod_psd_beschaeftigung;pnr#psd;eintrittdatum#psd;austrittdatum#psd;arbeitsverhaeltnis#psd;schriftl_befristung#psd;datum_urspr_befr#psd;abschl_befr_arbvertr#psd;verl_befr_arbvertr#psd;befr_gr_2_monate#psd;")
+        fileziel.write("\n11;u_lod_psd_mitarbeiter;pnr#psd;duevo_familienname#psd;duevo_vorname#psd;adresse_strassenname#psd;adresse_strasse_nr#psd;adresse_ort#psd;adresse_plz#psd;staatsangehoerigkeit#psd;geburtsdatum_ttmmjj#psd;geschlecht#psd;familienstand#psd;sozialversicherung_nr#psd;adresse_anschriftenzusatz#psd;gebort#psd;")
+        fileziel.write("\n12;u_lod_psd_taetigkeit;pnr#psd;berufsbezeichnung#psd;persgrs#psd;schulabschluss#psd;ausbildungsabschluss#psd;stammkostenstelle#psd;")
+        fileziel.write("\n13;u_lod_psd_arbeitszeit_regelm;pnr#psd;az_wtl_indiv#psd;")
+        fileziel.write("\n14;u_lod_psd_steuer;pnr#psd;identifikationsnummer#psd;els_2_haupt_ag_kz#psd;st_klasse#psd;kfb_anzahl#psd;faktor#psd;")
+        fileziel.write("\n15;u_lod_psd_sozialversicherung;pnr#psd;kz_zuschl_pv_kinderlose#psd;kv_bgrs#psd;rv_bgrs#psd;av_bgrs#psd;pv_bgrs#psd;")
+        fileziel.write("\n16;u_lod_psd_ma_bank;pnr#psd;ma_bank_zahlungsart#psd;ma_iban#psd;")
+        fileziel.write("\n17;u_lod_psd_festbezuege;pnr#psd;festbez_id#psd;lohnart_nr#psd;betrag#psd;")
+        fileziel.write("\n18;u_lod_psd_lohn_gehalt_bezuege;pnr#psd;std_lohn_1#psd;")
+        fileziel.write("\n\n* Stammdaten zur Anlage von Mitarbeitern\n")
+        
+        filewiedervorlage.write("[Allgemein]\nZiel=PWS2LODAS\nVersion_SST=1.0\nBeraterNr=999999\nMandantenNr=99999\n")
+        filewiedervorlage.write("Stringbegrenzer='\nFeldtrennzeichen=;\n* LEGENDE:\n* Datei erzeugt mit Tool main_arm_pfb\n* AP: Andreé Rosenkranz; andree@rosenkranz.one")
+        filewiedervorlage.write("\n\n* Satzbeschreibungen zur Anlage von Stammdaten für Mitarbeiter\n\n")
+        filewiedervorlage.write("[Satzbeschreibung]\nWiedervorlage=Termindatum;PersNr;Text;Bearbeiter;\n\n")
+        filewiedervorlage.write("[Wiedervorlage]\n")
+
+         
       
       ####### Daten schreiben
       fileziel.write("\n[Stammdaten]\n10;"+v_pnr+";"+v_eintrittsdatum+";"+v_austritt+";;;;;;")
@@ -288,21 +299,41 @@ def speichern_neu_AN():
       fileziel.write("\n16;"+v_pnr+";5;"+v_iban+";")
       fileziel.write("\n17;"+v_pnr+";"+v_fbid+";"+v_fbeigenelohnart+";"+v_gehalt+";")
       fileziel.write("\n18;"+v_pnr+";"+v_stdlohn+";")
-      fileziel.write("\n[Hinweisdaten]\n'**"+v_pnr+"** Krankenkasse: "+v_krankenkasse+" ** Gefahrtarif: "+v_uvgefahrtarif+" ** Staatsangehörigkeit: "+v_staatsang+" ** weitere Beschäftigung: "+v_weiterebesch+" (1=ja)** weitere Besch. auch geringfüging: "+v_weitereauchgering+" (1=ja)")
+      #fileziel.write("\n[Hinweisdaten]\n'**"+v_pnr+"** Krankenkasse: "+v_krankenkasse+" ** Gefahrtarif: "+v_uvgefahrtarif+" ** Staatsangehörigkeit: "+v_staatsang+" ** weitere Beschäftigung: "+v_weiterebesch+" (1=ja)** weitere Besch. auch geringfüging: "+v_weitereauchgering+" (1=ja)")
+      fileziel.write("\n[Hinweisdaten]\n'**"+v_pnr+"** Krankenkasse: "+v_krankenkasse+" ** Staatsangehörigkeit: "+v_staatsang+" ** weitere Beschäftigung: "+v_weiterebesch+" (1=ja)** weitere Besch. auch geringfüging: "+v_weitereauchgering+" (1=ja)")
       fileziel.write("** Geburtsland: "+v_geburtsland+" ** Konfession: "+v_konfession+" ** Faktor zur Steuer: "+v_faktor+" ** Informationen aus dem Textfeld: "+v_textfeld+"'")   
 
+      if v_krankenkasse != "":
+        filewiedervorlage.write("'"+var_aktuelles_Datum+"';'"+v_pnr+"';'Krankenkasse: "+v_krankenkasse+"';'pfb2lodas';\n")
+      if v_staatsang != "":
+        filewiedervorlage.write("'"+var_aktuelles_Datum+"';'"+v_pnr+"';'Staatsangehörigkeit: "+v_staatsang+"';'pfb2lodas';\n")
+      if v_weiterebesch != "0":
+        filewiedervorlage.write("'"+var_aktuelles_Datum+"';'"+v_pnr+"';'weitere Beschäftigung: "+v_weiterebesch+" (1=ja)';'pfb2lodas';\n")
+        filewiedervorlage.write("'"+var_aktuelles_Datum+"';'"+v_pnr+"';'weitere Beschäftigung auch geringfügig: "+v_weitereauchgering+" (1=ja)';'pfb2lodas';\n")
+      if v_geburtsland != "":
+        filewiedervorlage.write("'"+var_aktuelles_Datum+"';'"+v_pnr+"';'Geburtsland: "+v_geburtsland+"';'pfb2lodas';\n")
+      if v_konfession != "":
+        filewiedervorlage.write("'"+var_aktuelles_Datum+"';'"+v_pnr+"';'Konfession: "+v_konfession+"';'pfb2lodas';\n")
+      if v_faktor != "":
+        filewiedervorlage.write("'"+var_aktuelles_Datum+"';'"+v_pnr+"';'Faktor zur Steuer: "+v_faktor+"';'pfb2lodas';\n")
+      if v_textfeld != "":
+        filewiedervorlage.write("'"+var_aktuelles_Datum+"';'"+v_pnr+"';'Textfeld : "+v_textfeld+"';'pfb2lodas';\n")   
+
       fileziel.close()
+      filewiedervorlage.close()
 
 #################################################################################################
 
 def konvertieren():
    # kopieren der Erfassunsgdatei in einen Lodas import mit Protokoll
-   if os.path.exists("daten\\pfb_lodas.txt"):
+    if os.path.exists("daten\\pfb_lodas.txt"):
       ZielDatei = os.path.join(time.strftime('%Y%m%d_%H%M'))
       copyfile("daten\\pfb_lodas.txt","sicherung\\"+(ZielDatei)+"_pfb.sic")
       os.rename("daten\\pfb_lodas.txt","daten\\"+(ZielDatei)+"_pfb_lodas.txt")
-      messagebox.showinfo("Konvertierung", "Die Datei "+str(ZielDatei)+"_lodas.txt in dem Verzeichnis \\daten\\ steht für LODAS bereit!")
-   else:
+      copyfile("daten\\pfb_wiedervorlage.txt","sicherung\\"+(ZielDatei)+"_pfb_wv.sic")
+      os.rename("daten\\pfb_wiedervorlage.txt","daten\\"+(ZielDatei)+"_pfb_wv.txt")
+      messagebox.showinfo("Konvertierung", "Die Datei "+str(ZielDatei)+"_lodas.txt und \ndie Datei "+str(ZielDatei)+"_pfb_wv.txt in dem Verzeichnis \\daten\\ stehen für LODAS bereit!")
+    else:
       messagebox.showwarning("Quelldatei", "Es ist keine Datei zur Konvertierung vorhanden")
    
 ### Ende 
@@ -323,7 +354,7 @@ root = Tk()
 #################
 root.iconbitmap("format/datevreport.ico")
 root.configure(bg='#FAFAFA')
-root.title("Personalfragebogen V0.1a")
+root.title("Personalfragebogen V0.2a")
 
 screen_breite = root.winfo_screenwidth()
 screen_hoehe = root.winfo_screenheight()
@@ -484,10 +515,10 @@ L_krankenkasse.place(x= 10,y = 295)
 E_krankenkasse = Entry(root, bd = 1)
 E_krankenkasse.place(x = 120, y = 295, height=25, width=190)
 
-L_uvgefahrtarif = Label(root, text= "UV-Gefahrtarif", bg='#FAFAFA', font="Verdana 10" )
-L_uvgefahrtarif.place(x= 10, y = 345)
-E_uvgefahrtarif = Entry(root, bd = 1)
-E_uvgefahrtarif.place(x = 120, y = 345, height=25, width=105)
+#L_uvgefahrtarif = Label(root, text= "UV-Gefahrtarif", bg='#FAFAFA', font="Verdana 10" )
+#L_uvgefahrtarif.place(x= 10, y = 345)
+#E_uvgefahrtarif = Entry(root, bd = 1)
+#E_uvgefahrtarif.place(x = 120, y = 345, height=25, width=105)
 
 L_austritt =  Label(root, text= "Austrittsdatum", bg='#FAFAFA', font="Verdana 10" )
 L_austritt.place(x= 10, y = 415)
